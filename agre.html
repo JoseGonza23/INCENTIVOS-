@@ -1,0 +1,250 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ingreso de datos</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="/Styles/actu.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    
+    <header class="barra-superior">
+        <h2>Agregar</h2>
+    </header>
+    <br>
+    <div id="alertModal" class="mod" style="display: none;">
+        <div class="mod-content">
+            <br>
+            <span id="modalMessage"></span>
+            <br><br><br>
+            <button id="acceptButton" class="butto">Aceptar</button>
+        </div>
+    </div>
+    
+    <div class="container text-center">
+        <div class="row align-items-start">
+          <div class="col">
+            <form id="insertForm">
+                <div class="form-group">
+                    <label for="id">Id:</label>
+                    <input type="number" id="id" name="id" class="form-control" required>
+                </div>
+
+              <div class="form-group">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" id="nombre" name="nombre" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="operacion">Operación:</label>
+                  <input type="text" id="operacion" name="operacion" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="segmento">Segmento:</label>
+                  <input type="text" id="segmento" name="segmento" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="campana">Campaña:</label>
+                  <input type="text" id="campana" name="campana" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="gerente">Gerente:</label>
+                  <input type="text" id="gerente" name="gerente" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="mes">Mes:</label>
+                  <input type="text" id="mes" name="mes" class="form-control" required>
+              </div>
+          </div>
+          <div class="col">
+            <form id="insertForm">
+                <div class="form-group">
+                    <label for="coordinador_ID">Id Coordinador:</label>
+                    <input type="number" id="coordinador_ID" name="coordinador_ID" class="form-control" required>
+                </div>
+              <div class="form-group">
+                  <label for="Metas">Meta:</label>
+                  <input type="text" id="Metas" name="Metas" class="form-contr" required>
+              </div>
+      <br>
+              <div class="form-group">
+                  <label for="Piso_1">Piso_1:</label>
+                  <input type="text" id="Piso_1" name="Piso_1" class="form-control" required>
+              </div>
+      <br>
+              <div class="form-group">
+                  <label for="Piso_2">Piso_2:</label>
+                  <input type="text" id="Piso_2" name="Piso_2" class="form-control" required>
+              </div>
+              <br>
+              <div class="form-group">
+                  <label for="Piso_3">Piso_3:</label>
+                  <input type="text" id="Piso_3" name="Piso_3" class="form-control" required>
+              </div>
+              
+          </div>
+          <div class="col">
+            <form id="insertForm">
+                <div class="form-group">
+                    <label for="Coordinador_ID">Id Coordinador:</label>
+                    <input type="text" id="Coordinador_ID" name="Coordinador_ID" class="form-control" required>
+                </div>
+              <div class="form-group">
+                  <label for="Nombre">Nombre</label>
+                  <input type="text" id="Nombre" name="Nombre" class="form-contr" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="Descripción">Descripción</label>
+                  <input type="text" id="Descripción" name="Descripción" class="form-contro" required>
+              </div>
+      <br>
+              <div class="form-group">
+                  <label for="Porcentaje_Penalización">Procentaje</label>
+                  <input type="text" id="Porcentaje_Penalización" name="Porcentaje_Penalización" class="form-control" required>
+              </div>
+          </div>
+        </div>
+      </div>
+
+        <br>
+        <div class="cento">
+            <button type="button" onclick="cancel()" class="boton3">Cancelar</button>
+            <button type="button" onclick="insertData()" class="boton1">Insertar</button>
+        </div>
+    </form>
+
+
+    <script>
+        function cancel() {
+           window.history.back(); 
+       }
+   
+       function validateForm() {
+           const inputs = document.querySelectorAll('input');
+           for (const input of inputs) {
+               if (!input.value) {
+                   Swal.fire({
+                       icon: 'error',
+                       title: 'Campos obligatorios',
+                       text: 'Por favor, completa todos los campos.',
+                   });
+                   return false;
+               }
+           }
+           return true;
+       }
+   
+       function insertData() {
+           if (!validateForm()) return;
+   
+           const id = document.getElementById('id').value;
+           const nombre = document.getElementById('nombre').value;
+           const operacion = document.getElementById('operacion').value;
+           const segmento = document.getElementById('segmento').value;
+           const campana = document.getElementById('campana').value;
+           const gerente = document.getElementById('gerente').value;
+           const mes = document.getElementById('mes').value;
+   
+           const dataCoordinadores = {
+               id: id,
+               nombre: nombre,
+               operacion: operacion,
+               segmento: segmento,
+               campana: campana,
+               gerente: gerente,
+               mes: mes
+           };
+   
+           fetch('http://localhost:8080/insertar', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(dataCoordinadores)
+           })
+           .then(response => {
+               if (!response.ok) {
+                   throw new Error('Error al insertar datos de coordinadores');
+               }
+               return response.json();
+           })
+           .then(data => {
+               console.log('Datos de coordinadores insertados correctamente');
+           })
+           .catch(error => {
+               console.error('Error al insertar datos de coordinadores:', error);
+           });
+   
+   
+           const coordinador_ID = document.getElementById('coordinador_ID').value; 
+           const Metas = document.getElementById('Metas').value;
+           const Piso_1 = document.getElementById('Piso_1').value;
+           const Piso_2 = document.getElementById('Piso_2').value;
+           const Piso_3 = document.getElementById('Piso_3').value;
+   
+           const dataMetas = {
+               
+            coordinador_ID: coordinador_ID,
+            Metas: Metas,
+            Piso_1: Piso_1,
+            Piso_2: Piso_2,
+            Piso_3: Piso_3
+            };
+
+        
+   
+           fetch('http://localhost:8000/metas', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(dataMetas)
+           })
+           .then(response => {
+               if (!response.ok) {
+                   throw new Error('Error al insertar datos de metas');
+               }
+               return response.json();
+           })
+           .then(data => {
+    console.log('Datos de metas insertados correctamente');
+    
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: 'Datos insertados correctamente',
+    }).then((result) => {
+        
+        if (result.isConfirmed) {
+            window.location.href = 'add.html';
+        }
+    });
+})
+.catch(error => {
+    console.error('Error al insertar datos de metas:', error);
+    
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Ocurrió un error al insertar los datos',
+    });
+});
+
+   
+        }
+   </script>
+   
+
+</body>
+</html>
+
+
+

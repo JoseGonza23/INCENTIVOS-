@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administracion</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="/Styles/add.css">
+</head>
+
+<body>
+    <header class="barra-superior">
+        <h2>Administracion</h2>
+    </header>
+    <br><br>
+    <form id="searchForm">
+        <input type="text" id="nombre" name="nombre" placeholder="nombre" required>
+        <button type="submit"><i class="fi fi-rs-search"></i>Buscar</button>
+
+    </form>
+
+    <br>
+    <div class="container text-center">
+        <div class="row align-items-start">
+            <div class="col-1">
+                <a href="agre.html">
+                    <div class="usuario">
+                        <img src="Imagenes/agregar.png" class="icono">
+                        Agregar
+                    </div>
+                </a>
+            </div>
+            <div class="col-2">
+                <a href="index.html">
+                    <div class="usuario">
+                        <img src="Imagenes/telegram.png" class="icono">
+                        Home
+                    </div>
+                </a>
+            </div>
+            <div class="col">
+                <div class="usuario">
+                    <img src="Imagenes/lista.png" class="icono">
+
+                    <select id="entriesPerPage" name="entriesPerPage" onchange="changeEntriesPerPage(this.value)">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                        <option value="13">13</option>
+                        <option value="14">14</option>
+                        <option value="15">15</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="usuari">
+                    <img src="Imagenes/calendario.png" class="icono">
+                    Mes
+                    <select id="mesSelect" name="mes" onchange="changeMonth(this.value)">
+                        <option value="0">Enero</option>
+                        <option value="1">Febrero</option>
+                        <option value="2">Marzo</option>
+                        <option value="3">Abril</option>
+                        <option value="4">Mayo</option>
+                        <option value="5">Junio</option>
+                        <option value="6">Julio</option>
+                        <option value="7">Agosto</option>
+                        <option value="8">Septiembre</option>
+                        <option value="9">Octubre</option>
+                        <option value="10">Noviembre</option>
+                        <option value="11">Diciembre</option>
+
+                    </select>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <br>
+    <table id="data-table" class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">nombre</th>
+                <th scope="col">Operación</th>
+                <th scope="col">Segmeto</th>
+                <th scope="col">Campaña</th>
+                <th scope="col">Gerente</th>
+                <th scope="col">Mes</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div class="pagination-container">
+        <ul class="pagination justify-content-center" id="pagination"></ul>
+    </div>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let entriesPerPage = 8;
+            let currentPage = 1; // Agregado para definir la página actual
+            fetchData(entriesPerPage);
+            setCurrentMonth();
+            setInterval(setCurrentMonth, 1000 * 60 * 60);
+        });
+
+        document.getElementById("searchForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const nombre = document.getElementById("nombre").value;
+            if (nombre.trim() !== "") {
+                search(nombre);
+            } else {
+                fetchData();
+            }
+        });
+
+        function changeEntriesPerPage(value) {
+            entriesPerPage = parseInt(value);
+            currentPage = 1; // Reiniciar la página actual al cambiar la cantidad de entradas por página
+            fetchData();
+        }
+
+        function changeMonth(month) {
+            fetchData(parseInt(month));
+        }
+
+        async function fetchData(month) {
+            try {
+                let url = 'http://localhost:8080/data';
+
+                if (!isNaN(month)) {
+                    url += `?month=${month}`;
+                }
+
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error('Error fetching data: ' + response.statusText);
+                }
+                const data = await response.json();
+                populateTable(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        async function search(nombre) {
+            try {
+                const response = await fetch(`http://localhost:8080/buscar?nombre=${encodeURIComponent(nombre)}`);
+                if (!response.ok) {
+                    throw new Error('Error searching data: ' + response.statusText);
+                }
+                const data = await response.json();
+                populateTable(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        function setCurrentMonth() {
+            const currentDate = new Date();
+            const currentMonth = currentDate.getMonth();
+            const monthSelect = document.getElementById("mesSelect");
+            monthSelect.selectedIndex = currentMonth;
+        }
+
+        function populateTable(data) {
+            const tableBody = document.querySelector('#data-table tbody');
+            tableBody.innerHTML = '';
+
+            const startIndex = (currentPage - 1) * entriesPerPage;
+            const endIndex = startIndex + entriesPerPage;
+            const currentPageData = data.slice(startIndex, endIndex);
+
+            currentPageData.forEach(row => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+            <td>${row.id}</td>
+            <td>${row.nombre}</td>
+            <td>${row.Operación}</td>
+            <td>${row.Segmeto}</td>
+            <td>${row.Campaña}</td>
+            <td>${row.Gerente}</td>
+            <td>${row.Mes}</td>
+        `;
+                tr.addEventListener('click', function () {
+                    navigateToUpdatePage(row);
+                });
+                tableBody.appendChild(tr);
+            });
+
+            renderPagination(data.length);
+        }
+
+        function renderPagination(totalEntries) {
+            const totalPages = Math.ceil(totalEntries / entriesPerPage);
+            let paginationHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                paginationHTML += `<li class="page-item ${currentPage === i ? 'active' : ''}"><a class="page-link" href="#" onclick="changePage(${i})">${i}</a></li>`;
+            }
+
+            document.getElementById('pagination').innerHTML = paginationHTML;
+        }
+
+        function changePage(pageNumber) {
+            currentPage = pageNumber;
+            fetchData();
+        }
+
+        function navigateToUpdatePage(data) {
+            const queryString = Object.keys(data).map(key => key + '=' + encodeURIComponent(data[key])).join('&');
+            window.location.href = `actu.html?${queryString}`;
+        }
+
+
+    </script>
+</body>
+
+</html>

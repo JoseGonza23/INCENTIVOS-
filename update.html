@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizacion</title>
+    <link rel="stylesheet" href="/Styles/actu.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    
+    <header class="barra-superior">
+        <h2>Actualizar</h2>
+    </header>
+    <br><br>
+    <div class="container text-center">
+        <div class="row align-items-start">
+          <div class="col">
+            <form id="insertForm">
+              <div class="form-group">
+                  <label for="nombre">Nombre:</label>
+                  <input type="text" id="nombre" name="nombre" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="operacion">Operación:</label>
+                  <input type="text" id="operacion" name="operacion" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="segmento">Segmento:</label>
+                  <input type="text" id="segmento" name="segmento" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="campana">Campaña:</label>
+                  <input type="text" id="campana" name="campana" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="gerente">Gerente:</label>
+                  <input type="text" id="gerente" name="gerente" class="form-control" required>
+              </div>
+      
+              <div class="form-group">
+                  <label for="mes">Mes:</label>
+                  <input type="text" id="mes" name="mes" class="form-control" required>
+              </div>
+          </div>
+          
+              
+          </div>
+          
+      </div>
+
+      
+    </form>
+      <div class="cento">
+        <button type="button" onclick="cancel()" class="boton3">Cancelar</button>
+        <button type="button" onclick="insertData()" class="boton1">Actualizar</button>
+    </div>
+    <script>
+         function cancel() {
+            window.history.back(); 
+        }
+    </script>
+</body>
+</html>
